@@ -1,7 +1,7 @@
 {
   "name": "markdown-toc",
   "main": "./lib/markdown-toc",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Generate TOC (table of contents) of headlines from parsed markdown file",
   "activationCommands": {
     "atom-workspace": [
@@ -11,6 +11,11 @@
       "markdown-toc:delete"
     ]
   },
+  "activationHooks": [
+    "language-gfm:grammar-used",
+    "language-gfm-enhanced:grammar-used",
+    "language-markdown:grammar-used"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/nok/markdown-toc"

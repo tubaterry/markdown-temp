@@ -4,7 +4,8 @@ Markdown TOC
 Generate and update magically a table of contents based on the headlines of a parsed [markdown](http://en.wikipedia.org/wiki/Markdown) file.
 
 
-## Table of Contents
+# Table of Contents
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Usage](#usage)
 - [Installation](#installation)
@@ -13,20 +14,11 @@ Generate and update magically a table of contents based on the headlines of a pa
 - [Questions?](#questions)
 - [License](#license)
 
+<!-- /TOC -->
 
 ## Usage
 
 ![Magic](https://raw.githubusercontent.com/nok/markdown-toc/master/RECORD.gif)
-
-<!--
-## API Attributes
-
-- `depthFrom:1`
-- `depthTo:6`
-- `withLinks:1`
-- `updateOnSave:1`
-- `orderedList:0`
--->
 
 ## Installation
 

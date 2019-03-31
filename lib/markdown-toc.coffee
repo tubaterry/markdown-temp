@@ -3,18 +3,31 @@ Toc = require './Toc'
 module.exports =
 
   activate: (state) ->
-    atom.commands.add 'atom-workspace', 'markdown-toc:create': =>
-        @toc = new Toc(atom.workspace.getActivePaneItem())
-        @toc.create()
-    atom.commands.add 'atom-workspace', 'markdown-toc:update': =>
-        @toc = new Toc(atom.workspace.getActivePaneItem())
-        @toc.update()
-    atom.commands.add 'atom-workspace', 'markdown-toc:delete': =>
-        @toc = new Toc(atom.workspace.getActivePaneItem());
-        @toc.delete()
-    atom.commands.add 'atom-workspace', 'markdown-toc:toggle': =>
-        @toc = new Toc(atom.workspace.getActivePaneItem())
-        @toc.toggle()
+    editorCount = 0
+    while editorCount < atom.workspace.getTextEditors().length
+      @initToc(atom.workspace.getTextEditors()[editorCount])
+      editorCount++
 
+    at = @
+    atom.workspace.onDidAddTextEditor (event) ->
+      at.init(event.textEditor)
+
+  initToc: (thisEditor) ->
+    thisGrammar = thisEditor.getGrammar().packageName
+    if thisGrammar.match /^.*(markdown|gfm).*$/g
+      @toc = new Toc(thisEditor)
+      @toc.init()
+      atom.commands.add 'atom-workspace', 'markdown-toc:create': =>
+          @toc = new Toc(thisEditor)
+          @toc.create()
+      atom.commands.add 'atom-workspace', 'markdown-toc:update': =>
+          @toc = new Toc(thisEditor)
+          @toc.update()
+      atom.commands.add 'atom-workspace', 'markdown-toc:delete': =>
+          @toc = new Toc(thisEditor);
+          @toc.delete()
+      atom.commands.add 'atom-workspace', 'markdown-toc:toggle': =>
+          @toc = new Toc(thisEditor)
+          @toc.toggle()
   # deactivate: ->
   #   @toc.destroy()

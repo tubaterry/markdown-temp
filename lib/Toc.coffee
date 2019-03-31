@@ -24,6 +24,11 @@ class Toc
   # main methods (highest logic level)
 
 
+  init: ->
+    if @_hasToc()
+      @_readToc()
+
+
   create: ->
     if @_hasToc()
       @_deleteToc()
@@ -85,6 +90,17 @@ class Toc
           return true
     return false
 
+  _readToc: () ->
+    @__updateList()
+    if Object.keys(@list).length > 0
+      text = []
+      text.push "<!-- TOC depthFrom:"+@options.depthFrom+" depthTo:"+@options.depthTo+" withLinks:"+@options.withLinks+" updateOnSave:"+@options.updateOnSave+" orderedList:"+@options.orderedList+" -->\n"
+      list = @__createList()
+      if list isnt false
+        Array.prototype.push.apply text, list
+      text.push "\n<!-- /TOC -->"
+      return text.join "\n"
+    return ""
 
   # embed list with the open and close comment:
   # <!-- TOC --> [list] <!-- /TOC -->
