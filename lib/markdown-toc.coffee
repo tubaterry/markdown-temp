@@ -10,7 +10,7 @@ module.exports =
 
     at = @
     atom.workspace.onDidAddTextEditor (event) ->
-      at.init(event.textEditor)
+      at.initToc(event.textEditor)
 
   initToc: (thisEditor) ->
     thisGrammar = thisEditor.getGrammar().packageName
