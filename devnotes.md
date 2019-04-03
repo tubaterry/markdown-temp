@@ -2,6 +2,27 @@
 
 hey who knows, maybe some of this will be useful for someone else learning to hack at Atom / grammars / etc
 
+# Table of Contents
+
+hashtag dogfooding
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [working notes](#working-notes)
+- [Table of Contents](#table-of-contents)
+	- [some semblance of a plan?](#some-semblance-of-a-plan)
+		- [rewrite the header detection to use Atom and not just futz with text](#rewrite-the-header-detection-to-use-atom-and-not-just-futz-with-text)
+		- [refactor so we don't get weird behavior](#refactor-so-we-dont-get-weird-behavior)
+			- [ideas:](#ideas)
+				- [todo list ideas](#todo-list-ideas)
+	- [Get grammar info](#get-grammar-info)
+		- [line-by-line tokenizing? didn't work the first time around](#line-by-line-tokenizing-didnt-work-the-first-time-around)
+		- [what's the tokenized text object look like?](#whats-the-tokenized-text-object-look-like)
+	- [Here's what I'm parsing for to find where to put the TOC](#heres-what-im-parsing-for-to-find-where-to-put-the-toc)
+
+<!-- /TOC -->
+
+
 ## some semblance of a plan?
 
 ### rewrite the header detection to use Atom and not just futz with text
@@ -24,6 +45,7 @@ my first PR had weird behavior when multiple markdown docs were open.
 ##### todo list ideas
 - live-update? what's the perf penalty? can we minimize enough to make it worth it?
 - subsection TOCs for big files if you're a masochist i suppose
+- Option for including "Table of Contents" heading within the TOC tag? that'd be neat.
 
 ## Get grammar info
 
@@ -65,9 +87,14 @@ tokenizedText:
 ## Here's what I'm parsing for to find where to put the TOC
 
 TOC opener:
+not sure yet if we can rely on exactly these scopes but both should be there.
+```
 Scopes: ["source.gfm","comment.block.gfm"]
 Value: " TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 "
+```
 
 TOC Closer:
+```
 Scopes: ["source.gfm","comment.block.gfm"]
-" /TOC "
+Value: " /TOC "
+```
