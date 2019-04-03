@@ -46,6 +46,11 @@ my first PR had weird behavior when multiple markdown docs were open.
 - live-update? what's the perf penalty? can we minimize enough to make it worth it?
 - subsection TOCs for big files if you're a masochist i suppose
 - Option for including "Table of Contents" heading within the TOC tag? that'd be neat.
+- any other markdown-specific stuff that might be handy?
+  - is it worth subsuming a bunch of other markdown one-offs?
+    - idk but i like the idea of providing a bit more help
+    - what's the 'penalty' for renaming an atom package once it's published?
+    - i ain't rewriting _more_ shit, gotta make sure everyone's properly credited if i do.
 
 ## Get grammar info
 
