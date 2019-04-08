@@ -4,21 +4,39 @@ hey who knows, maybe some of this will be useful for someone else learning to ha
 
 # Table of Contents
 
-hashtag dogfooding
+hashtag dogfooding... as long as you're running `atom -d`, dingus.
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [working notes](#working-notes)
+- [working notes / dev diary](#working-notes-dev-diary)
 - [Table of Contents](#table-of-contents)
-	- [some semblance of a plan?](#some-semblance-of-a-plan)
-		- [rewrite the header detection to use Atom and not just futz with text](#rewrite-the-header-detection-to-use-atom-and-not-just-futz-with-text)
-		- [refactor so we don't get weird behavior](#refactor-so-we-dont-get-weird-behavior)
+	- [ok so what's the problem?](#ok-so-whats-the-problem)
+		- [credit](#credit)
+		- [markdown-toc does its own text parsing](#markdown-toc-does-its-own-text-parsing)
+		- [the uhhh architecture? design? format? framework? (idk i'm not a developer)](#the-uhhh-architecture-design-format-framework-idk-im-not-a-developer)
+	- [ATOM HAS NO DEV BEST PRACTICES GUIDE](#atom-has-no-dev-best-practices-guide)
+	- [refactor plan](#refactor-plan)
+		- [language](#language)
+		- [Package architecture](#package-architecture)
+			- [Atom-global stuff](#atom-global-stuff)
+			- [Editor-level stuff](#editor-level-stuff)
+			- [Atom Event subscriptions](#atom-event-subscriptions)
+			- [Table of Contents](#table-of-contents)
+				- [Object properties](#object-properties)
+				- [Object methods](#object-methods)
+		- [keybindings?](#keybindings)
 			- [ideas:](#ideas)
 				- [todo list ideas](#todo-list-ideas)
-	- [Get grammar info](#get-grammar-info)
-		- [line-by-line tokenizing? didn't work the first time around](#line-by-line-tokenizing-didnt-work-the-first-time-around)
-		- [what's the tokenized text object look like?](#whats-the-tokenized-text-object-look-like)
-	- [Here's what I'm parsing for to find where to put the TOC](#heres-what-im-parsing-for-to-find-where-to-put-the-toc)
+	- [Learning shit](#learning-shit)
+		- [Atom behavior/organization](#atom-behaviororganization)
+			- [Init questions](#init-questions)
+				- [Package](#package)
+				- [File](#file)
+			- [Editing the file:](#editing-the-file)
+		- [Get grammar info](#get-grammar-info)
+			- [line-by-line tokenizing? didn't work the first time around](#line-by-line-tokenizing-didnt-work-the-first-time-around)
+			- [what's the tokenized text object look like?](#whats-the-tokenized-text-object-look-like)
+			- [Here's what I'm parsing for to find where to put the TOC](#heres-what-im-parsing-for-to-find-where-to-put-the-toc)
 
 <!-- /TOC -->
 
@@ -26,6 +44,10 @@ hashtag dogfooding
 Well, two problems, and they're short ones:
 1. There aren't many good markdown tools out there, and
 2. even the most popular one appears to have been mostly about getting it working. (Sorry Nok, no offense intended. )
+3. Also everything's wicked out of date.
+
+### credit
+I gotta give credit to [nok](https://github.com/nok) because their code got me started and gave me enough framework to learn it from there.
 
 But, what's up with markdown-toc?
 
@@ -35,7 +57,7 @@ But Atom provides all this meta info from the grammar, why are we not using it? 
 
 ### the uhhh architecture? design? format? framework? (idk i'm not a developer)
 Original was inconsistently working -
-- atom-local variables instead of editor-local meant reparsing every time.
+- atom-scoped variables instead of editor-local meant reparsing every time.
 - closing the editor/file and reopening meant having to delete the TOC tag & reactivate.
 - could only be 'active' on one markdown file at a time i think
 
@@ -47,10 +69,14 @@ Original was inconsistently working -
 Guess i should think about getting the idea out there, eh?  Plus side: it's 800% ok to get it wrong since nobody's bothered yet!
 
 ## refactor plan
-How do we solve this? idk, probably a rewrite?
+How do we solve this? idk, probably a rewrite? Let's rewrite.  But also let's think this through
+
+### language
+I'm not a developer, I'm systems/devops.  I'm already more-or-less aware of javascript and ehhhh I don't see the personal value in writ
 
 ### Package architecture
 - Init: On atom load? Get it into the packages menu so you can add the tag.
+  - also gives me room to add more than TOC if I have that much motivation
 	- TODO: answer init questions
 
 #### Atom-global stuff
@@ -59,29 +85,79 @@ How do we solve this? idk, probably a rewrite?
 
 #### Editor-level stuff
   - Subscribe to grammar changes so we can be ready as soon as markdown's detected?
+	- Can we have the editor's buffer's toc object subscribe to our editor's events?
 
 #### Atom Event subscriptions
   - Editor:
 		- observeGrammar (set up TOC stuff in individual file.)
+		  - Grammar is editor-level but I'm having a hard time envisioning a reason to attach a TOC obj to anything other than the buffer
   - Buffer:
 	  - onWillSave (autoupdate on save)
 		- onDidReload (re-read the file TOC)
 		- onDidChange or onDidStopChanging (live-update)
 
+#### Table of Contents
+Let's keep it in memory. Shouldn't require much memory...? (Worth testing?)
 
-#### keep TOC in memory, per buffer.
-Doesn't require much mem really.  Should be quick to rebuild on load. (Worth testing?)
+- One per textBuffer.
+  - If user tries to insert from dropdown/command palette, throw error notification with link to existing
+	- If more than one is parsed - do nothing, throw error notification with links?
 
-##### Object format
+##### Object properties
+TOC: atom.workspace.textEditorRegistry.editors[num].buffer.markdownToc (JSON example)
+```
+{
+	"markdownOutline": [
+		{
+			headerName = "",
+			headerRange = "[0,0], [1,1]"
+		}
+	],
+	"options": {
+		 "depthFrom": 1,
+		 "depthTo": 6,
+		 "withLinks": true,
+		 "updateOnSave": true,
+		 "liveUpdate": true,
+		 "skipIntro": true,
+		 "anchors": true,
+		 "listType": "unordered"
+	},
+	"tocLocation": null
+}
+```
+Descriptions:
+- markdownOutline: array of header objects - actual string, plus Range obj (X,Y coords of beginning and end of string) marking location
+- options
+  - depthTo: 6 is default and max that GitHub Markdown (and others, as far as I know - is that a definitional thing or just that's how far people wanna go?) will parse.
+	- skipIntro: if true, ignore all headers above the marker during parsing.
+	- anchors: generate anchor vals to make translation easier?  (eh maybe not necessary.)
+	- listType: defaults to unordered - bullets, optional "ordered" for numbers.
+- tocLocation: current range of the toc tag. If tag not found, obviously we can only updateToc() since there's nowhere to read options or write the toc.
+  - coffeescript note: `if tocLocation?` is how we check for null/undefined.
+     - extra coffeescript note: `@variable ?= "value"` is how we do conditional assignment.
+
+##### Object methods
+TOC:
+  - pasteToBuffer()
+	  - packages up the TOC object to be pasted into the textBuffer.
+	- updateToc()
+	  - reparse textBuffer contents and update the markdownOutline object
+	- partialUpdate(range) ***undecided*** - may not be necessary to include this, need to test this mess on my weakass Surface.
+	  - only reparse file from passed-in range until the end.
+			- if I'm clever, might pass in oldRange & newRange from buffer.onDidStopChanging(), just update the locations rather than reparse.
+	- updateOptions()
+	  - read options from textBuffer
 
 ### keybindings?
 no. go away.  Dropdown menu lets you paste in a TOC header, off you go. Keybindings are for shit you do more than once.
 
-* Caveat: if I get out over my skis and add more markdown functions, have at.
+* Caveat: if I get out over my skis and add more markdown functions, feel free to mock me for this.
 
 #### ideas:
 - package itself should be workspace-local and not editor- or buffer-local
-  - joke's on you, I have no idea what best practice is yet
+  - ~~joke's on you, I have no idea what best practice is yet~~
+	- there is no best practice.  I'm running the package at workspace level so we can respond to workspace events without fucky scoping issues
 - where's the per-file object best to be put? editor? buffer?
   - do we hold it in memory, or do we re-parse every save?
   - well, what's the object look like?
@@ -93,6 +169,7 @@ no. go away.  Dropdown menu lets you paste in a TOC header, off you go. Keybindi
 - live-update? what's the perf penalty? can we minimize enough to make it worth it?
 - subsection TOCs for big files if you're a masochist i suppose
 - Option for including "Table of Contents" heading within the TOC tag? that'd be neat.
+- Autodetecting if the headers themselves have links
 - any other markdown-specific stuff that might be handy?
   - is it worth subsuming a bunch of other markdown one-offs?
     - idk but i like the idea of providing a bit more help

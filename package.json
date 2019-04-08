@@ -1,32 +1,19 @@
 {
-  "name": "markdown-toc",
-  "main": "./lib/markdown-toc",
-  "version": "0.4.3",
-  "description": "Generate TOC (table of contents) of headlines from parsed markdown file",
-  "activationCommands": {
-    "atom-workspace": [
-      "markdown-toc:toggle",
-      "markdown-toc:create",
-      "markdown-toc:update",
-      "markdown-toc:delete"
-    ]
-  },
-  "activationHooks": [
-    "language-gfm:grammar-used",
-    "language-gfm-enhanced:grammar-used",
-    "language-markdown:grammar-used"
-  ],
+  "name": "markdown-toolbox",
+  "main": "./lib/markdown-toolbox",
+  "version": "0.5.0",
+  "description": "Markdown helper 'suite', including Table of Contents generation",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nok/markdown-toc"
+    "url": "https://github.com/tubaterry/markdown-toolbox"
   },
   "bugs": {
-    "url": "https://github.com/nok/markdown-toc/issues"
+    "url": "https://github.com/tubaterry/markdown-toolbox/issues"
   },
-  "homepage": "https://github.com/nok/markdown-toc",
+  "homepage": "https://github.com/tubaterry/markdown-toolbox",
   "license": "MIT",
   "engines": {
-    "atom": ">=0.174.0 <2.0.0"
+    "atom": ">=1.35 <2.0.0"
   },
   "dependencies": {}
 }

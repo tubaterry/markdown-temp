@@ -2,31 +2,22 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Toggle Markdown TOC'
-      'command': 'markdown-toc:toggle'
+      'label': "Markdown Toolkit",
+      'submenu': [
+        'label': 'Insert Table of Contents',
+        'command': 'markdown-toc:insert'
+      ]
     }
   ]
 'menu': [
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'Markdown TOC'
+      'label': 'Markdown Toolkit'
       'submenu': [
         {
-          'label': 'Toggle TOC'
-          'command': 'markdown-toc:toggle'
-        },
-        {
-          'label': 'Add TOC'
-          'command': 'markdown-toc:create'
-        },
-        {
-          'label': 'Update TOC'
-          'command': 'markdown-toc:update'
-        },
-        {
-          'label': 'Remove TOC'
-          'command': 'markdown-toc:delete'
+          'label': 'Insert Table of Contents'
+          'command': 'markdown-toc:insert'
         }
       ]
     ]
