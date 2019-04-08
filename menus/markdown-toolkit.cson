@@ -5,7 +5,7 @@
       'label': "Markdown Toolkit",
       'submenu': [
         'label': 'Insert Table of Contents',
-        'command': 'markdown-toc:insert'
+        'command': 'mdtk-toc:insert'
       ]
     }
   ]
@@ -17,7 +17,11 @@
       'submenu': [
         {
           'label': 'Insert Table of Contents'
-          'command': 'markdown-toc:insert'
+          'command': 'mdtk-toc:insert'
+        }
+        {
+          'label': 'Update Table of Contents'
+          'command': 'mdtk-toc:update'
         }
       ]
     ]

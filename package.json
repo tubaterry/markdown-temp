@@ -1,16 +1,16 @@
 {
-  "name": "markdown-toolbox",
-  "main": "./lib/markdown-toolbox",
+  "name": "markdown-toolkit",
+  "main": "./lib/markdown-toolkit",
   "version": "0.5.0",
-  "description": "Markdown helper 'suite', including Table of Contents generation",
+  "description": "Suite of markdown tools to make the markdown life a little less difficult.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tubaterry/markdown-toolbox"
+    "url": "https://github.com/tubaterry/markdown-toolkit"
   },
   "bugs": {
-    "url": "https://github.com/tubaterry/markdown-toolbox/issues"
+    "url": "https://github.com/tubaterry/markdown-toolkit/issues"
   },
-  "homepage": "https://github.com/tubaterry/markdown-toolbox",
+  "homepage": "https://github.com/tubaterry/markdown-toolkit",
   "license": "MIT",
   "engines": {
     "atom": ">=1.35 <2.0.0"
