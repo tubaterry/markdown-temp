@@ -1,8 +1,10 @@
+{ CompositeDisposable } = require 'atom';
+
 module.exports =
-class Toc
+class tableOfContents
 
 
-  constructor: (@editor) ->
+  constructor: (@buffer) ->
     @lines = []
     @list = []
     @options =
@@ -11,13 +13,20 @@ class Toc
       withLinks: 1  # withLinks
       updateOnSave: 1 # updateOnSave
       orderedList: 0 # orderedList
-
-    at = @
-    @editor.getBuffer().onWillSave () ->
-      if at.options.updateOnSave is 1
-        if at._hasToc()
-          at._deleteToc()
-          at.editor.setTextInBufferRange [[at.open,0], [at.open,0]], at._createToc()
+    console.log(@buffer.file.path)
+    if atom.commands.findCommands
+    atom.commands.add 'atom-text-editor', 'mdtk-toc:insert': =>
+      console.log("insert command issued")
+    atom.commands.add 'atom-text-editor', 'mdtk-toc:update': =>
+      console.log("update command issued")
+    # at = @
+    # @buffer.onDidStopChanging() ->
+    # @buffer.onDidReload() ->
+    # @buffer.onWillSave () ->
+    #   if at.options.updateOnSave is 1
+    #     if at._hasToc()
+    #       at._deleteToc()
+    #       at.editor.setTextInBufferRange [[at.open,0], [at.open,0]], at._createToc()
 
 
   # ----------------------------------------------------------------------------

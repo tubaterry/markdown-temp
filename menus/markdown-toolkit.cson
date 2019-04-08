@@ -1,0 +1,29 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': "Markdown Toolkit",
+      'submenu': [
+        'label': 'Insert Table of Contents',
+        'command': 'mdtk-toc:insert'
+      ]
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Markdown Toolkit'
+      'submenu': [
+        {
+          'label': 'Insert Table of Contents'
+          'command': 'mdtk-toc:insert'
+        }
+        {
+          'label': 'Update Table of Contents'
+          'command': 'mdtk-toc:update'
+        }
+      ]
+    ]
+  }
+]
