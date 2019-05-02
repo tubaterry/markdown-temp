@@ -1,9 +1,11 @@
 Markdown Toolkit
 ============
 
-Handy tool(soon to be tool**s**) to make markdown editing a bit less tedious
+Handy tool(soon to be tool**s**) to make markdown editing a bit less tedious.
 
 (Activates only when `Markdown` is in the title of your file's active grammar.)
+
+Hopefully a handy companion to `markdown-preview-plus` package, which is more of an output thing.
 
 # Table of Contents
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->

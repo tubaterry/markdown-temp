@@ -13,12 +13,7 @@ class tableOfContents
       withLinks: 1  # withLinks
       updateOnSave: 1 # updateOnSave
       orderedList: 0 # orderedList
-    console.log(@buffer.file.path)
-    if atom.commands.findCommands
-    atom.commands.add 'atom-text-editor', 'mdtk-toc:insert': =>
-      console.log("insert command issued")
-    atom.commands.add 'atom-text-editor', 'mdtk-toc:update': =>
-      console.log("update command issued")
+
     # at = @
     # @buffer.onDidStopChanging() ->
     # @buffer.onDidReload() ->
@@ -28,7 +23,14 @@ class tableOfContents
     #       at._deleteToc()
     #       at.editor.setTextInBufferRange [[at.open,0], [at.open,0]], at._createToc()
 
+  # Commands
+  insertCmd: ->
+    filename = @buffer.file.path
+    atom.notifications.addSuccess("Inserted TOC tag into #{filename}")
 
+  updateCmd: ->
+    filename = @buffer.file.path
+    atom.notifications.addSuccess("Updated TOC")
   # ----------------------------------------------------------------------------
   # main methods (highest logic level)
 

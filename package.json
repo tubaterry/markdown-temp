@@ -2,7 +2,7 @@
   "name": "markdown-toolkit",
   "main": "./lib/markdown-toolkit",
   "version": "0.5.0",
-  "description": "Suite of markdown tools to make the markdown life a little less difficult.",
+  "description": "Eventually a suite of markdown tools to make the markdown life a little less difficult.",
   "repository": {
     "type": "git",
     "url": "https://github.com/tubaterry/markdown-toolkit"

@@ -26,27 +26,8 @@ H2 Alternative
 -----
 
 # Table of Contents
-<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+[[toc]]
 
-- [test2](#test2)
-	- [test3](#test3)
-		- [test4](#test4)
-			- [test5](#test5)
-				- [test6](#test6)
-				- [# test7](#-test7)
-- [test2](#test2)
-	- [test3](#test3)
-		- [test4](#test4)
-			- [test5](#test5)
-				- [test6 -->](#test6-)
-- [Usage](#usage)
-- [Installation](#installation)
-- [Features](#features)
-- [Contributors](#contributors)
-- [Questions?](#questions)
-- [License](#license)
-
-<!-- /TOC -->
 
 ## Usage
 

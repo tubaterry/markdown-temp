@@ -5,11 +5,12 @@ class markdownToolkit
 
 
   constructor: (@editor) ->
-    @buffer = @editor.buffer
-
-    # TOC
-    @buffer.mdtkToc ?= new tableOfContents(@buffer)
-
+    # Put any editor-level stuff here.
     #Wrap-up
     myeditor = @editor.id
-    console.log("Setup mtdk for #{myeditor}")
+    console.log("Setup mdtk for #{myeditor}")
+
+  toolInit: (@buffer) ->
+    console.log(@buffer)
+
+    @buffer.mdtk.toc ?= new tableOfContents(@buffer)
