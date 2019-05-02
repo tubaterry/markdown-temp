@@ -80,10 +80,10 @@ Guess i should think about getting the idea out there, eh?  Plus side: it's 800%
 How do we solve this? idk, probably a rewrite? Let's rewrite.  But also let's think this through
 
 ## language
-I'm not a developer, I'm systems/devops.  I'm already more-or-less aware of javascript and ehhhh I don't see the personal value in writ
+I'm not a developer, I'm systems/devops.  I'm already more-or-less aware of javascript and ehhhh I don't see the personal value in writ whatever it's coffeescript
 
 ## Package architecture
-The goal is: Maintainably add-onable
+The goal is: Maintainably add-onable?
 
 ### Code:
 keep the toolkit-wide stuff as minimal as possible, stay contained in your boxes dangit.
@@ -92,6 +92,11 @@ Each tool in the toolkit should be focused on a single markdown editor.
 - less boilerplate rework (single point of entry)
 
 each tool will get a reference to its parent editor (`constructor: (@parentEditor) ->`)
+
+markdown-toolkit contains init - put your atom commands / menu references whatever here, under commandInit
+
+#### expectations
+- only init is global. you get one per markdown file. `@buffer.mdtk.toc`
 
 ### Init
 - Init: on atom load.
@@ -205,6 +210,9 @@ Here's where I'm learning how Atom works.  More or less in chronological order?
 ### Init questions
 How
 
+When atom starts up, editors and stuff haven't been defined yet.  Should probably be sure about their existince first
+
+if you've got sub-modules to init, you have to set that up outside of the constructor. (IE mtdk -> toc)
 
 #### Package
 - How early do we start up?

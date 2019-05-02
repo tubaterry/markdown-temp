@@ -7,21 +7,21 @@ module.exports =
   # @subscriptions = new CompositeDisposable
 
   activate: (state) ->
-    console.log("mtdk activation")
-    # console.log(state)
-    @tocInit()
+    @commandInit()
 
     # watch for new editors, watch for their grammars
     atom.workspace.observeTextEditors (editor) ->
-      console.log(editor)
       editor.observeGrammar (thisGrammar) ->
+        thisBuffer=editor.buffer
         idnum = editor.id
         if thisGrammar.name.match /^.*(m|M)(arkdown).*$/g
-          editor.mdtk ?= new markdownToolkit(editor)
+          thisBuffer.mdtk ?= new markdownToolkit(editor)
+          thisBuffer.mdtk.toolInit(thisBuffer)
         else
-          if editor.mdtk?
-            delete editor.mdtk
-        console.log(thisGrammar.name)
+          # this is definitely gonna break if someone's got the same file open under different grammars.
+          # that's tomorrow's problem.
+          if thisBuffer.mdtk?
+            delete thisBuffer.mdtk
 
       # Save this for if we need to do any cleanup?
       # editor.onDidDestroy () ->
@@ -35,12 +35,20 @@ module.exports =
     # nothing at the moment
 
 
-  tocInit: () ->
+  commandInit: () ->
     # Create commands
-
+    atom.commands.add 'atom-text-editor', 'mdtk:toc-insert': ->
+      editor = atom.workspace.getActiveTextEditor()
+      if editor.buffer.mdtk?
+        if editor.buffer.mdtk.toc?
+         editor.buffer.mdtk.toc.insertCmd()
+    atom.commands.add 'atom-text-editor', 'mdtk:toc-update': ->
+      editor = atom.workspace.getActiveTextEditor()
+      if editor.buffer.mdtk?
+        if editor.buffer.mdtk.toc?
+         editor.buffer.mdtk.toc.updateCmd()
 
     # This is where we setup our higher-level callbacks
-    console.log("toc callbacks")
     # if thisEditor.getGrammar().packageName isnt undefined
     #   thisGrammar = thisEditor.getGrammar().packageName
     #   if thisGrammar.match /^.*(markdown|gfm).*$/g
